@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Just Jane Maker Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: { 50:'#eef3fb', 100:'#dce7f7', 200:'#b9cff0', 300:'#8db1e5', 400:'#5a8dd4', 500:'#2b7fff', 600:'#1a3a6b', 700:'#142d54', 800:'#0f2040', 900:'#0a152b' },
+        coral: { 50:'#fef2f2', 100:'#fee2e2', 200:'#fecaca', 400:'#f87171', 500:'#ef4444', 600:'#dc2626' },
+        success: { 50:'#f0fdf4', 100:'#dcfce7', 200:'#bbf7d0', 500:'#22c55e', 600:'#16a34a', 700:'#15803d' },
+        warning: { 50:'#fffbeb', 100:'#fef3c7', 200:'#fde68a', 500:'#f59e0b', 600:'#d97706', 700:'#b45309' },
+        info: { 50:'#eff6ff', 100:'#dbeafe', 200:'#bfdbfe', 500:'#3b82f6', 600:'#2563eb' },
+        bg: { page:'#f0f4f8', card:'#ffffff' }
+      },
+      fontFamily: { sans: ['Inter','sans-serif'] }
+    }
+  }
+};
+</script>
+<style>
+:root {
+  --navy: #1a3a6b;
+  --navy-light: #2b7fff;
+  --navy-dark: #0f2040;
+  --bg-page: #f0f4f8;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --coral: #ef4444;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: #1e293b; margin:0; }
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-thumb { background:#94a3b8; border-radius:3px; }
+
+.nav-link { transition: all .2s; border-bottom: 2px solid transparent; }
+.nav-link.active, .nav-link:hover { color: #2b7fff; border-bottom-color: #2b7fff; }
+.nav-link.active { font-weight: 600; }
+
+.card { background:#fff; border-radius:16px; box-shadow:0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04); transition: transform .15s, box-shadow .15s; }
+.card:hover { box-shadow:0 4px 12px rgba(0,0,0,.08); }
+.card-flat { background:#fff; border-radius:16px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+
+.pill { display:inline-flex; align-items:center; padding:2px 10px; border-radius:9999px; font-size:.75rem; font-weight:600; }
+.pill-green { background:#dcfce7; color:#15803d; }
+.pill-yellow { background:#fef3c7; color:#b45309; }
+.pill-blue { background:#dbeafe; color:#1e40af; }
+.pill-red { background:#fee2e2; color:#991b1b; }
+.pill-orange { background:#ffedd5; color:#9a3412; }
+.pill-grey { background:#f1f5f9; color:#475569; }
+.pill-purple { background:#ede9fe; color:#5b21b6; }
+.pill-navy { background:#1a3a6b; color:#fff; }
+
+.section-title { font-size:1.75rem; font-weight:800; color:#1a3a6b; }
+.section-sub { font-size:.95rem; color:#64748b; margin-top:4px; }
+
+.btn-primary { background:#1a3a6b; color:#fff; border:none; padding:10px 20px; border-radius:12px; font-weight:600; font-size:.875rem; cursor:pointer; transition:background .2s, transform .1s; display:inline-flex; align-items:center; gap:6px; }
+.btn-primary:hover { background:#142d54; transform:translateY(-1px); }
+.btn-primary:active { transform:translateY(0); }
+
+.btn-accent { background:#2b7fff; color:#fff; border:none; padding:8px 16px; border-radius:10px; font-weight:600; font-size:.8rem; cursor:pointer; transition:background .2s; display:inline-flex; align-items:center; gap:5px; }
+.btn-accent:hover { background:#1d6fe0; }
+
+.btn-outline { background:transparent; color:#1a3a6b; border:2px solid #1a3a6b; padding:8px 16px; border-radius:10px; font-weight:600; font-size:.8rem; cursor:pointer; transition:all .2s; }
+.btn-outline:hover { background:#1a3a6b; color:#fff; }
+
+.badge-version { background:#2b7fff; color:#fff; font-size:.65rem; font-weight:700; padding:2px 8px; border-radius:9999px; }
+
+.table-container { overflow-x:auto; border-radius:12px; }
+.data-table { width:100%; border-collapse:collapse; font-size:.8rem; }
+.data-table thead th { background:#1a3a6b; color:#fff; padding:10px 12px; text-align:left; font-weight:600; white-space:nowrap; }
+.data-table tbody td { padding:8px 12px; border-bottom:1px solid #e2e8f0; }
+.data-table tbody tr:hover { background:#f0f4f8; }
+.data-table tbody tr:nth-child(even) { background:#f8fafc; }
+.data-table tbody tr:nth-child(even):hover { background:#eef2f7; }
+
+.accordion-header { cursor:pointer; display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#fff; border-radius:14px; transition:background .2s; }
+.accordion-header:hover { background:#f8fafc; }
+.accordion-content { display:none; padding:0 20px 16px; }
+.accordion-content.open { display:block; }
+.accordion-header .chevron { transition:transform .2s; }
+.accordion-header.open .chevron { transform:rotate(180deg); }
+
+.check-item { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-radius:10px; cursor:pointer; transition:background .15s; user-select:none; }
+.check-item:hover { background:#f0f4f8; }
+.check-item.completed .check-text { text-decoration:line-through; color:#94a3b8; }
+
+.progress-bar-bg { background:#e2e8f0; border-radius:9999px; height:10px; overflow:hidden; }
+.progress-bar-fill { height:100%; border-radius:9999px; transition:width .4s ease; background:linear-gradient(90deg,#16a34a,#2b7fff); }
+
+.filter-chip { padding:6px 14px; border-radius:9999px; font-size:.78rem; font-weight:500; cursor:pointer; border:1.5px solid #cbd5e1; background:#fff; color:#475569; transition:all .15s; }
+.filter-chip.active, .filter-chip:hover { background:#1a3a6b; color:#fff; border-color:#1a3a6b; }
+
+.stars { color:#f59e0b; letter-spacing:1px; }
+.form-input { width:100%; padding:10px 14px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:.875rem; transition:border-color .2s, box-shadow .2s; background:#f8fafc; }
+.form-input:focus { outline:none; border-color:#2b7fff; box-shadow:0 0 0 3px rgba(43,127,255,.12); background:#fff; }
+select.form-input { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; }
+
+.margin-badge { padding:3px 10px; border-radius:9999px; font-size:.72rem; font-weight:700; }
+.margin-excellent { background:#dcfce7; color:#15803d; }
+.margin-good { background:#fef3c7; color:#b45309; }
+.margin-thin { background:#ffedd5; color:#9a3412; }
+.margin-review { background:#fee2e2; color:#991b1b; }
+
+.mobile-menu-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:98; }
+.mobile-menu-overlay.open { display:block; }
+
+@media (max-width:767px) {
+  .section-title { font-size:1.35rem; }
+  .data-table { font-size:.72rem; }
+  .data-table thead th, .data-table tbody td { padding:6px 8px; }
+}
+</style>
+</head>
+<body data-id="0" class="min-h-screen">
+<app-icon data-id="1" hidden data-icon="factory" data-palette="Blue"></app-icon>
+
+<!-- STICKY NAVIGATION -->
+<nav data-id="2" id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm" style="border-bottom:2px solid #1a3a6b;">
+  <div data-id="3" class="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-[60px]">
+    <div data-id="4" class="flex items-center gap-2 flex-shrink-0">
+      <span data-id="5" class="text-xl">🏭</span>
+      <span data-id="6" class="font-bold text-navy-600 text-base md:text-lg whitespace-nowrap">Just Jane Maker Hub</span>
+    </div>
+    <div data-id="7" class="hidden md:flex items-center gap-1 overflow-x-auto" id="desktop-nav">
+      <a data-id="8" href="#home" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="home">🏠 Home</a>
+      <a data-id="9" href="#osot" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="osot">🗂️ OSOT</a>
+      <a data-id="10" href="#inventory" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="inventory">📦 Inventory</a>
+      <a data-id="11" href="#sublimation" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="sublimation">🎨 Sublimation</a>
+      <a data-id="12" href="#3dprint" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="3dprint">🖨️ 3D Print</a>
+      <a data-id="13" href="#sku" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="sku">🏷️ SKU Ref</a>
+      <a data-id="14" href="#recipes" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="recipes">📒 Recipes</a>
+      <a data-id="15" href="#projects" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="projects">📋 Projects</a>
+      <a data-id="16" href="#suppliers" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="suppliers">🤝 Suppliers</a>
+      <a data-id="17" href="#checklist" class="nav-link text-xs font-medium px-2 py-2 whitespace-nowrap" data-section="checklist">✅ Checklist</a>
+    </div>
+    <div data-id="18" class="flex items-center gap-3">
+      <span data-id="19" class="badge-version hidden md:inline">v2.0</span>
+      <button data-id="20" id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+        <i data-id="21" data-lucide="menu" class="w-6 h-6 text-navy-600"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div data-id="22" id="mobile-overlay" class="mobile-menu-overlay"></div>
+<div data-id="23" id="mobile-menu" class="fixed top-0 right-0 bottom-0 w-[280px] bg-white z-[99] shadow-2xl transform translate-x-full transition-transform duration-300 overflow-y-auto">
+  <div data-id="24" class="flex items-center justify-between p-4 border-b border-gray-100">
+    <div data-id="25" class="flex items-center gap-2">
+      <span data-id="26" class="text-xl">🏭</span>
+      <span data-id="27" class="font-bold text-navy-600">Maker Hub</span>
+      <span data-id="28" class="badge-version">v2.0</span>
+    </div>
+    <button data-id="29" id="mobile-menu-close" class="p-2 rounded-lg hover:bg-gray-100">
+      <i data-id="30" data-lucide="x" class="w-5 h-5 text-gray-500"></i>
+    </button>
+  </div>
+  <div data-id="31" class="p-3 flex flex-col gap-1" id="mobile-nav-links">
+    <a data-id="32" href="#home" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">🏠 Home</a>
+    <a data-id="33" href="#osot" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">🗂️ OSOT</a>
+    <a data-id="34" href="#inventory" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">📦 Inventory</a>
+    <a data-id="35" href="#sublimation" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">🎨 Sublimation</a>
+    <a data-id="36" href="#3dprint" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">🖨️ 3D Print</a>
+    <a data-id="37" href="#sku" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">🏷️ SKU Ref</a>
+    <a data-id="38" href="#recipes" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">📒 Recipes</a>
+    <a data-id="39" href="#projects" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">📋 Projects</a>
+    <a data-id="40" href="#suppliers" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">🤝 Suppliers</a>
+    <a data-id="41" href="#checklist" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-navy-50 hover:text-navy-600 transition">✅ Checklist</a>
+  </div>
+</div>
+
+<main data-id="42" class="pt-[68px]">
+
+<!-- ==================== SECTION 1: HOME ==================== -->
+<section data-id="43" id="home" class="py-10 md:py-16">
+<div data-id="44" class="max-w-6xl mx-auto px-4 md:px-6">
+  <div data-id="45" class="text-center mb-10">
+    <h1 data-id="46" class="text-3xl md:text-5xl font-extrabold text-navy-600 mb-2">Just Jane Maker Hub</h1>
+    <p data-id="47" class="text-base md:text-lg text-gray-500 font-medium">v2.0 · Dorval, QC · June 2026</p>
+  </div>
+
+  <!-- System Documents -->
+  <div data-id="48" class="card p-5 md:p-7 mb-8">
+    <h2 data-id="49" class="text-lg font-bold text-navy-600 mb-5 flex items-center gap-2">📂 System Documents — Live OneDrive Links</h2>
+    <div data-id="50" class="flex flex-col gap-3">
+      <div data-id="51" class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-navy-50 gap-3">
+        <div data-id="52" class="flex items-center gap-3 min-w-0">
+          <span data-id="53" class="text-xl flex-shrink-0">📊</span>
+          <div data-id="54" class="min-w-0">
+            <p data-id="55" class="font-semibold text-sm text-navy-700 truncate">Maker Lab Inventory Database.xlsx</p>
+            <p data-id="56" class="text-xs text-gray-500">Just Jane Maker Hub › Excel Master Database</p>
+          </div>
+        </div>
+        <a data-id="57" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="btn-accent flex-shrink-0 text-center justify-center">Open <i data-id="58" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+      <div data-id="59" class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-navy-50 gap-3">
+        <div data-id="60" class="flex items-center gap-3 min-w-0">
+          <span data-id="61" class="text-xl flex-shrink-0">📒</span>
+          <div data-id="62" class="min-w-0">
+            <p data-id="63" class="font-semibold text-sm text-navy-700 truncate">Maker Lab Recipe and Project Book.docx</p>
+            <p data-id="64" class="text-xs text-gray-500">Just Jane Maker Hub › Maker Lab Notebook</p>
+          </div>
+        </div>
+        <a data-id="65" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent flex-shrink-0 text-center justify-center">Open <i data-id="66" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+      <div data-id="67" class="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-xl bg-navy-50 gap-3">
+        <div data-id="68" class="flex items-center gap-3 min-w-0">
+          <span data-id="69" class="text-xl flex-shrink-0">🗂️</span>
+          <div data-id="70" class="min-w-0">
+            <p data-id="71" class="font-semibold text-sm text-navy-700 truncate">Maker Lab OSOT Master Index.docx</p>
+            <p data-id="72" class="text-xs text-gray-500">Just Jane Maker Hub › OSOT — One Source of Truth</p>
+          </div>
+        </div>
+        <a data-id="73" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s07f6a8f311c1407d8187bf3fbcaca1d2" target="_blank" rel="noopener" class="btn-accent flex-shrink-0 text-center justify-center">Open <i data-id="74" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Progress -->
+  <div data-id="75" class="card p-5 md:p-7">
+    <h2 data-id="76" class="text-lg font-bold text-navy-600 mb-5 flex items-center gap-2"><i data-id="77" data-lucide="activity" class="w-5 h-5"></i> System Progress</h2>
+    <div data-id="78" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <!-- Completed -->
+      <div data-id="79" class="rounded-xl p-4" style="background:#f0fdf4; border-left:4px solid #16a34a;">
+        <h3 data-id="80" class="font-bold text-sm text-green-700 mb-3 flex items-center gap-1.5">✅ COMPLETED</h3>
+        <ul data-id="81" class="space-y-2 text-xs text-gray-700">
+          <li data-id="82" class="flex items-start gap-2"><span data-id="83" class="text-green-600 flex-shrink-0 mt-0.5">✓</span> Inventory Database built</li>
+          <li data-id="84" class="flex items-start gap-2"><span data-id="85" class="text-green-600 flex-shrink-0 mt-0.5">✓</span> Recipe & Project Book built</li>
+          <li data-id="86" class="flex items-start gap-2"><span data-id="87" class="text-green-600 flex-shrink-0 mt-0.5">✓</span> OSOT Master Index built</li>
+          <li data-id="88" class="flex items-start gap-2"><span data-id="89" class="text-green-600 flex-shrink-0 mt-0.5">✓</span> All 3 docs saved to OneDrive</li>
+          <li data-id="90" class="flex items-start gap-2"><span data-id="91" class="text-green-600 flex-shrink-0 mt-0.5">✓</span> Documents cross-linked in OSOT</li>
+          <li data-id="92" class="flex items-start gap-2"><span data-id="93" class="text-green-600 flex-shrink-0 mt-0.5">✓</span> Maker Hub updated to v2.0</li>
+        </ul>
+      </div>
+      <!-- In Progress -->
+      <div data-id="94" class="rounded-xl p-4" style="background:#fffbeb; border-left:4px solid #d97706;">
+        <h3 data-id="95" class="font-bold text-sm text-amber-700 mb-3 flex items-center gap-1.5">🔄 IN PROGRESS</h3>
+        <ul data-id="96" class="space-y-2 text-xs text-gray-700">
+          <li data-id="97" class="flex items-start gap-2"><span data-id="98" class="text-amber-500 flex-shrink-0 mt-0.5">○</span> Enter real stock counts</li>
+          <li data-id="99" class="flex items-start gap-2"><span data-id="100" class="text-amber-500 flex-shrink-0 mt-0.5">○</span> Add real supplier account numbers</li>
+          <li data-id="101" class="flex items-start gap-2"><span data-id="102" class="text-amber-500 flex-shrink-0 mt-0.5">○</span> Verify OneDrive links on Android</li>
+          <li data-id="103" class="flex items-start gap-2"><span data-id="104" class="text-amber-500 flex-shrink-0 mt-0.5">○</span> Delete stray root-level folder</li>
+          <li data-id="105" class="flex items-start gap-2"><span data-id="106" class="text-amber-500 flex-shrink-0 mt-0.5">○</span> Complete Pricing & COGS Calculator</li>
+          <li data-id="107" class="flex items-start gap-2"><span data-id="108" class="text-amber-500 flex-shrink-0 mt-0.5">○</span> Enter real product costs</li>
+        </ul>
+      </div>
+      <!-- Next Up -->
+      <div data-id="109" class="rounded-xl p-4" style="background:#eff6ff; border-left:4px solid #2b7fff;">
+        <h3 data-id="110" class="font-bold text-sm text-blue-700 mb-3 flex items-center gap-1.5">⏳ NEXT UP</h3>
+        <ul data-id="111" class="space-y-2 text-xs text-gray-700">
+          <li data-id="112" class="flex items-start gap-2"><span data-id="113" class="text-blue-500 flex-shrink-0 mt-0.5">→</span> Set up weekly reorder reminder</li>
+          <li data-id="114" class="flex items-start gap-2"><span data-id="115" class="text-blue-500 flex-shrink-0 mt-0.5">→</span> Build Order & Production Tracker</li>
+          <li data-id="116" class="flex items-start gap-2"><span data-id="117" class="text-blue-500 flex-shrink-0 mt-0.5">→</span> Build shareable Product Catalog</li>
+          <li data-id="118" class="flex items-start gap-2"><span data-id="119" class="text-blue-500 flex-shrink-0 mt-0.5">→</span> Set up Etsy listing templates</li>
+          <li data-id="120" class="flex items-start gap-2"><span data-id="121" class="text-blue-500 flex-shrink-0 mt-0.5">→</span> Quarterly inventory audit reminder</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 2: OSOT ==================== -->
+<section data-id="122" id="osot" class="py-10 md:py-14" style="background:#e8eef6;">
+<div data-id="123" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="124" class="section-title flex items-center gap-2">🗂️ OSOT — What Needs Classifying?</h2>
+  <p data-id="125" class="section-sub mb-6">Type any item, task, or question — get routed to the right document and section.</p>
+
+  <div data-id="126" class="card p-5 md:p-7 mb-6">
+    <div data-id="127" class="flex flex-col sm:flex-row gap-3">
+      <input data-id="128" type="text" id="osot-input" class="form-input flex-1" placeholder="e.g. sublimation mug, PLA filament, packaging reorder..." />
+      <button data-id="129" id="osot-classify-btn" class="btn-primary flex-shrink-0 justify-center">Classify <i data-id="130" data-lucide="arrow-right" class="w-4 h-4"></i></button>
+    </div>
+    <div data-id="131" id="osot-result" class="mt-4 hidden"></div>
+  </div>
+
+  <!-- Quick Route Reference -->
+  <div data-id="132" class="card p-5 md:p-7">
+    <h3 data-id="133" class="font-bold text-navy-600 text-base mb-4 flex items-center gap-2"><i data-id="134" data-lucide="signpost" class="w-5 h-5"></i> Quick Route Reference</h3>
+    <div data-id="135" class="table-container">
+      <table data-id="136" class="data-table">
+        <thead data-id="137"><tr data-id="138"><th data-id="139">Topic</th><th data-id="140">Document</th><th data-id="141">Section</th></tr></thead>
+        <tbody data-id="142">
+          <tr data-id="143"><td data-id="144">Inventory / Stock Levels</td><td data-id="145">📊 Inventory Database</td><td data-id="146">Category tab (MAT/BLK/CONS/PKG/SUB/FIL)</td></tr>
+          <tr data-id="147"><td data-id="148">Sublimation Settings</td><td data-id="149">📒 Recipe & Project Book</td><td data-id="150">Section 1 — Sublimation Recipes</td></tr>
+          <tr data-id="151"><td data-id="152">3D Print / Filament</td><td data-id="153">📒 Recipe & Project Book</td><td data-id="154">Section 6 — 3D Print Project Notes</td></tr>
+          <tr data-id="155"><td data-id="156">Paint / Stain / Wash</td><td data-id="157">📒 Recipe & Project Book</td><td data-id="158">Sections 2–4 — Paint / Stain / Wash</td></tr>
+          <tr data-id="159"><td data-id="160">Laser Settings</td><td data-id="161">📒 Recipe & Project Book</td><td data-id="162">Section 5 — Laser Project Recipes</td></tr>
+          <tr data-id="163"><td data-id="164">HTV / Vinyl</td><td data-id="165">📒 Recipe & Project Book</td><td data-id="166">Section 7 — Finishing & HTV</td></tr>
+          <tr data-id="167"><td data-id="168">SKU Naming</td><td data-id="169">🗂️ OSOT Master Index</td><td data-id="170">Section 2 — SKU Naming Conventions</td></tr>
+          <tr data-id="171"><td data-id="172">Suppliers / Vendors</td><td data-id="173">🗂️ OSOT Master Index</td><td data-id="174">Section 4 — Supplier Master List</td></tr>
+          <tr data-id="175"><td data-id="176">Pricing / COGS</td><td data-id="177">💰 Pricing Calculator</td><td data-id="178">Coming soon</td></tr>
+          <tr data-id="179"><td data-id="180">Recipe Versioning</td><td data-id="181">🗂️ OSOT Master Index</td><td data-id="182">Section 3 — Versioning Rules</td></tr>
+          <tr data-id="183"><td data-id="184">Lab Map / Storage Zones</td><td data-id="185">🗂️ OSOT Master Index</td><td data-id="186">Section 6 — Lab Organization Map</td></tr>
+          <tr data-id="187"><td data-id="188">General / Other</td><td data-id="189">🗂️ OSOT Master Index</td><td data-id="190">Section 8 — Quick Reference Table</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 3: INVENTORY ==================== -->
+<section data-id="191" id="inventory" class="py-10 md:py-14">
+<div data-id="192" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="193" class="section-title flex items-center gap-2">📦 Inventory Quick-View</h2>
+  <p data-id="194" class="section-sub mb-6">Status snapshot across all 6 categories — update weekly in Excel.</p>
+
+  <div data-id="195" class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-8">
+    <div data-id="196" class="card p-4 md:p-5">
+      <div data-id="197" class="flex items-center justify-between mb-2"><span data-id="198" class="text-2xl">🪵</span><span data-id="199" class="pill pill-navy text-[.65rem]">MAT</span></div>
+      <h3 data-id="200" class="font-bold text-sm text-navy-600">Materials</h3>
+      <p data-id="201" class="text-xs text-gray-500 mt-1">14 items</p>
+      <span data-id="202" class="pill pill-red mt-2">2 low stock</span>
+      <a data-id="203" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="block mt-3 text-xs font-semibold text-navy-400 hover:text-navy-600 transition">Open in Excel →</a>
+    </div>
+    <div data-id="204" class="card p-4 md:p-5">
+      <div data-id="205" class="flex items-center justify-between mb-2"><span data-id="206" class="text-2xl">🎁</span><span data-id="207" class="pill pill-navy text-[.65rem]">BLK</span></div>
+      <h3 data-id="208" class="font-bold text-sm text-navy-600">Blanks</h3>
+      <p data-id="209" class="text-xs text-gray-500 mt-1">15 items</p>
+      <span data-id="210" class="pill pill-red mt-2">1 low stock</span>
+      <a data-id="211" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="block mt-3 text-xs font-semibold text-navy-400 hover:text-navy-600 transition">Open in Excel →</a>
+    </div>
+    <div data-id="212" class="card p-4 md:p-5">
+      <div data-id="213" class="flex items-center justify-between mb-2"><span data-id="214" class="text-2xl">🧴</span><span data-id="215" class="pill pill-navy text-[.65rem]">CONS</span></div>
+      <h3 data-id="216" class="font-bold text-sm text-navy-600">Consumables</h3>
+      <p data-id="217" class="text-xs text-gray-500 mt-1">15 items</p>
+      <span data-id="218" class="pill pill-red mt-2">1 low stock</span>
+      <a data-id="219" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="block mt-3 text-xs font-semibold text-navy-400 hover:text-navy-600 transition">Open in Excel →</a>
+    </div>
+    <div data-id="220" class="card p-4 md:p-5">
+      <div data-id="221" class="flex items-center justify-between mb-2"><span data-id="222" class="text-2xl">📦</span><span data-id="223" class="pill pill-navy text-[.65rem]">PKG</span></div>
+      <h3 data-id="224" class="font-bold text-sm text-navy-600">Packaging</h3>
+      <p data-id="225" class="text-xs text-gray-500 mt-1">15 items</p>
+      <span data-id="226" class="pill pill-red mt-2">3 low stock</span>
+      <a data-id="227" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="block mt-3 text-xs font-semibold text-navy-400 hover:text-navy-600 transition">Open in Excel →</a>
+    </div>
+    <div data-id="228" class="card p-4 md:p-5">
+      <div data-id="229" class="flex items-center justify-between mb-2"><span data-id="230" class="text-2xl">🎨</span><span data-id="231" class="pill pill-navy text-[.65rem]">SUB</span></div>
+      <h3 data-id="232" class="font-bold text-sm text-navy-600">Sublimation Supplies</h3>
+      <p data-id="233" class="text-xs text-gray-500 mt-1">15 items</p>
+      <span data-id="234" class="pill pill-red mt-2">2 low stock</span>
+      <a data-id="235" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="block mt-3 text-xs font-semibold text-navy-400 hover:text-navy-600 transition">Open in Excel →</a>
+    </div>
+    <div data-id="236" class="card p-4 md:p-5">
+      <div data-id="237" class="flex items-center justify-between mb-2"><span data-id="238" class="text-2xl">🖨️</span><span data-id="239" class="pill pill-navy text-[.65rem]">FIL</span></div>
+      <h3 data-id="240" class="font-bold text-sm text-navy-600">3D Filament</h3>
+      <p data-id="241" class="text-xs text-gray-500 mt-1">17 items</p>
+      <span data-id="242" class="pill pill-red mt-2">2 low stock</span>
+      <a data-id="243" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="block mt-3 text-xs font-semibold text-navy-400 hover:text-navy-600 transition">Open in Excel →</a>
+    </div>
+  </div>
+
+  <!-- Low Stock Alerts -->
+  <div data-id="244" class="card p-5 md:p-7">
+    <h3 data-id="245" class="font-bold text-base text-red-600 mb-4 flex items-center gap-2"><i data-id="246" data-lucide="alert-triangle" class="w-5 h-5"></i> Low Stock Alerts</h3>
+    <div data-id="247" class="table-container">
+      <table data-id="248" class="data-table">
+        <thead data-id="249"><tr data-id="250"><th data-id="251">SKU</th><th data-id="252">Item Name</th><th data-id="253">Qty</th><th data-id="254">Reorder Pt</th><th data-id="255">Action</th></tr></thead>
+        <tbody data-id="256">
+          <tr data-id="257" style="background:#fef2f2;"><td data-id="258" class="font-mono text-xs">MAT-WOOD-003</td><td data-id="259">Walnut Board</td><td data-id="260" class="font-bold text-red-600">5</td><td data-id="261">2</td><td data-id="262"><a data-id="263" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+          <tr data-id="264" style="background:#fef2f2;"><td data-id="265" class="font-mono text-xs">MAT-ACRY-003</td><td data-id="266">Mirrored Acrylic</td><td data-id="267" class="font-bold text-red-600">4</td><td data-id="268">3</td><td data-id="269"><a data-id="270" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+          <tr data-id="271" style="background:#fef2f2;"><td data-id="272" class="font-mono text-xs">BLK-MUG-004</td><td data-id="273">Travel Tumbler Mug</td><td data-id="274" class="font-bold text-red-600">18</td><td data-id="275">6</td><td data-id="276"><a data-id="277" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+          <tr data-id="278" style="background:#fef2f2;"><td data-id="279" class="font-mono text-xs">CONS-INK-002</td><td data-id="280">SG500 Magenta Cartridge</td><td data-id="281" class="font-bold text-red-600">3</td><td data-id="282">2</td><td data-id="283"><a data-id="284" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+          <tr data-id="285" style="background:#fef2f2;"><td data-id="286" class="font-mono text-xs">PKG-MAIL-003</td><td data-id="287">Poly Mailer 14.5×19</td><td data-id="288" class="font-bold text-red-600">2</td><td data-id="289">1</td><td data-id="290"><a data-id="291" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+          <tr data-id="292" style="background:#fef2f2;"><td data-id="293" class="font-mono text-xs">PKG-LBL-002</td><td data-id="294">Thank You Stickers</td><td data-id="295" class="font-bold text-red-600">3</td><td data-id="296">2</td><td data-id="297"><a data-id="298" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+          <tr data-id="299" style="background:#fef2f2;"><td data-id="300" class="font-mono text-xs">SUB-PAPER-003</td><td data-id="301">TexPrint-R Roll 13in</td><td data-id="302" class="font-bold text-red-600">2</td><td data-id="303">1</td><td data-id="304"><a data-id="305" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+          <tr data-id="306" style="background:#fef2f2;"><td data-id="307" class="font-mono text-xs">SUB-INK-002</td><td data-id="308">SG1000 Magenta Cartridge</td><td data-id="309" class="font-bold text-red-600">2</td><td data-id="310">2</td><td data-id="311"><a data-id="312" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b" target="_blank" rel="noopener" class="pill pill-red cursor-pointer hover:opacity-80">Reorder</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 4: SUBLIMATION ==================== -->
+<section data-id="313" id="sublimation" class="py-10 md:py-14" style="background:#e8eef6;">
+<div data-id="314" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="315" class="section-title flex items-center gap-2">🎨 Sublimation Hub</h2>
+  <p data-id="316" class="section-sub mb-6">Quick-reference press settings for all blank types.</p>
+
+  <div data-id="317" class="card p-5 md:p-7 mb-6">
+    <div data-id="318" class="mb-4">
+      <input data-id="319" type="text" id="sub-filter" class="form-input max-w-md" placeholder="Filter by blank type..." />
+    </div>
+    <div data-id="320" class="table-container">
+      <table data-id="321" class="data-table" id="sub-table">
+        <thead data-id="322"><tr data-id="323"><th data-id="324">Blank Type</th><th data-id="325">Temp °F</th><th data-id="326">Temp °C</th><th data-id="327">Time (s)</th><th data-id="328">Pressure</th><th data-id="329">Pre-Press</th><th data-id="330">Notes</th></tr></thead>
+        <tbody data-id="331" id="sub-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Troubleshooting -->
+  <div data-id="332" class="card overflow-hidden">
+    <div data-id="333" class="accordion-header" id="trouble-header">
+      <span data-id="334" class="font-bold text-sm text-navy-600 flex items-center gap-2">🔧 Troubleshooting</span>
+      <i data-id="335" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron"></i>
+    </div>
+    <div data-id="336" class="accordion-content" id="trouble-content">
+      <div data-id="337" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+        <div data-id="338" class="p-4 rounded-xl" style="background:#fef2f2; border-left:3px solid #ef4444;">
+          <p data-id="339" class="font-semibold text-xs text-red-700 mb-1">Ghosting</p>
+          <p data-id="340" class="text-xs text-gray-600">Secure paper tightly with heat tape; do not move blank immediately after pressing.</p>
+        </div>
+        <div data-id="341" class="p-4 rounded-xl" style="background:#fffbeb; border-left:3px solid #f59e0b;">
+          <p data-id="342" class="font-semibold text-xs text-amber-700 mb-1">Colour too light</p>
+          <p data-id="343" class="text-xs text-gray-600">Increase time by 10 sec; check ink cartridge install date and expiry.</p>
+        </div>
+        <div data-id="344" class="p-4 rounded-xl" style="background:#eff6ff; border-left:3px solid #3b82f6;">
+          <p data-id="345" class="font-semibold text-xs text-blue-700 mb-1">White spots / moisture marks</p>
+          <p data-id="346" class="text-xs text-gray-600">Pre-press blank for 5 sec before sublimating to remove moisture.</p>
+        </div>
+        <div data-id="347" class="p-4 rounded-xl" style="background:#faf5ff; border-left:3px solid #a855f7;">
+          <p data-id="348" class="font-semibold text-xs text-purple-700 mb-1">Bleeding / smearing</p>
+          <p data-id="349" class="text-xs text-gray-600">Reduce pressure slightly; ensure paper is fully dry before pressing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 5: 3D PRINT ==================== -->
+<section data-id="350" id="3dprint" class="py-10 md:py-14">
+<div data-id="351" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="352" class="section-title flex items-center gap-2">🖨️ 3D Print Hub</h2>
+  <p data-id="353" class="section-sub mb-6">FDM settings, resin quick-reference & filament storage rules.</p>
+
+  <div data-id="354" class="card p-5 md:p-7 mb-6">
+    <h3 data-id="355" class="font-bold text-sm text-navy-600 mb-4">FDM Print Settings</h3>
+    <div data-id="356" class="table-container">
+      <table data-id="357" class="data-table">
+        <thead data-id="358"><tr data-id="359"><th data-id="360">Filament</th><th data-id="361">Nozzle °C</th><th data-id="362">Bed °C</th><th data-id="363">Speed</th><th data-id="364">Layer</th><th data-id="365">Infill</th><th data-id="366">Fan</th><th data-id="367">Notes</th></tr></thead>
+        <tbody data-id="368">
+          <tr data-id="369"><td data-id="370" class="font-semibold">PLA</td><td data-id="371">200–220</td><td data-id="372">60</td><td data-id="373">50 mm/s</td><td data-id="374">0.20</td><td data-id="375">15%</td><td data-id="376">100%</td><td data-id="377" class="text-xs">Great all-rounder; easy to print</td></tr>
+          <tr data-id="378"><td data-id="379" class="font-semibold">PLA+</td><td data-id="380">210–230</td><td data-id="381">60</td><td data-id="382">50 mm/s</td><td data-id="383">0.20</td><td data-id="384">20%</td><td data-id="385">100%</td><td data-id="386" class="text-xs">Stronger than PLA; same ease of use</td></tr>
+          <tr data-id="387"><td data-id="388" class="font-semibold">PLA Silk</td><td data-id="389">220–235</td><td data-id="390">60</td><td data-id="391">40 mm/s</td><td data-id="392">0.20</td><td data-id="393">15%</td><td data-id="394">50%</td><td data-id="395" class="text-xs">Slow speed for shiny finish</td></tr>
+          <tr data-id="396"><td data-id="397" class="font-semibold">PLA Wood</td><td data-id="398">190–220</td><td data-id="399">60</td><td data-id="400">40 mm/s</td><td data-id="401">0.30</td><td data-id="402">15%</td><td data-id="403">100%</td><td data-id="404" class="text-xs">0.4mm+ nozzle ONLY</td></tr>
+          <tr data-id="405"><td data-id="406" class="font-semibold">PETG</td><td data-id="407">230–250</td><td data-id="408">80</td><td data-id="409">40 mm/s</td><td data-id="410">0.20</td><td data-id="411">20%</td><td data-id="412">30%</td><td data-id="413" class="text-xs">Food-safe; tune retraction for stringing</td></tr>
+          <tr data-id="414"><td data-id="415" class="font-semibold">TPU</td><td data-id="416">220–240</td><td data-id="417">30</td><td data-id="418">25 mm/s</td><td data-id="419">0.30</td><td data-id="420">40%</td><td data-id="421">0%</td><td data-id="422" class="text-xs">Print slowly; direct drive preferred</td></tr>
+          <tr data-id="423"><td data-id="424" class="font-semibold">ABS</td><td data-id="425">230–250</td><td data-id="426">100</td><td data-id="427">40 mm/s</td><td data-id="428">0.20</td><td data-id="429">25%</td><td data-id="430">0%</td><td data-id="431" class="text-xs">Enclosure required; acetone-smoothable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div data-id="432" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Storage Rules -->
+    <div data-id="433" class="card p-5" style="border-top:4px solid #2b7fff;">
+      <h3 data-id="434" class="font-bold text-sm text-navy-600 mb-3 flex items-center gap-2">📦 Filament Storage Rules</h3>
+      <ul data-id="435" class="space-y-2 text-xs text-gray-700">
+        <li data-id="436" class="flex items-start gap-2"><i data-id="437" data-lucide="droplets" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5"></i> Target humidity: <strong data-id="438">&lt;40% RH</strong></li>
+        <li data-id="439" class="flex items-start gap-2"><i data-id="440" data-lucide="thermometer" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5"></i> Target temp: <strong data-id="441">18–22°C</strong></li>
+        <li data-id="442" class="flex items-start gap-2"><i data-id="443" data-lucide="package" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5"></i> Store in sealed containers with silica gel desiccant</li>
+        <li data-id="444" class="flex items-start gap-2"><i data-id="445" data-lucide="refresh-cw" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5"></i> Replace desiccant when indicator shows &gt;40%</li>
+        <li data-id="446" class="flex items-start gap-2"><i data-id="447" data-lucide="clock" class="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5"></i> Shelf life — PLA: 1–2 yrs | PETG: 2+ yrs | TPU: 1 yr</li>
+        <li data-id="448" class="flex items-start gap-2"><i data-id="449" data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5"></i> Wet filament signs: popping, rough surface, bubbles</li>
+      </ul>
+    </div>
+    <!-- Resin Reference -->
+    <div data-id="450" class="card p-5" style="border-top:4px solid #8b5cf6;">
+      <h3 data-id="451" class="font-bold text-sm text-purple-700 mb-3 flex items-center gap-2">🧪 Resin Quick-Reference</h3>
+      <ul data-id="452" class="space-y-2 text-xs text-gray-700">
+        <li data-id="453" class="flex items-start gap-2"><i data-id="454" data-lucide="sun" class="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5"></i> UV Wavelength: <strong data-id="455">405nm</strong></li>
+        <li data-id="456" class="flex items-start gap-2"><i data-id="457" data-lucide="layers" class="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5"></i> <strong data-id="458">Standard resin:</strong> 6 bottom layers, 45s bottom, 3.5s normal</li>
+        <li data-id="459" class="flex items-start gap-2"><i data-id="460" data-lucide="layers" class="w-3.5 h-3.5 text-purple-500 flex-shrink-0 mt-0.5"></i> <strong data-id="461">ABS-like resin:</strong> 6 bottom layers, 50s bottom, 4.0s normal</li>
+      </ul>
+      <div data-id="462" class="mt-3 p-3 rounded-lg" style="background:#fef2f2;">
+        <p data-id="463" class="text-xs font-semibold text-red-700 flex items-center gap-1.5"><i data-id="464" data-lucide="shield-alert" class="w-3.5 h-3.5"></i> SAFETY</p>
+        <p data-id="465" class="text-xs text-red-600 mt-1">Always wear nitrile gloves, work in ventilated area, UV-cure all waste before disposal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 6: SKU REFERENCE ==================== -->
+<section data-id="466" id="sku" class="py-10 md:py-14" style="background:#e8eef6;">
+<div data-id="467" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="468" class="section-title flex items-center gap-2">🏷️ SKU Naming Reference</h2>
+  <p data-id="469" class="section-sub mb-6">Format: <code data-id="470" class="bg-white px-2 py-0.5 rounded text-navy-600 font-mono text-sm">[CATEGORY]-[SUBCATEGORY]-[SEQUENCE]</code> e.g. MAT-WOOD-001</p>
+
+  <div data-id="471" class="card p-5 md:p-7 mb-6">
+    <div data-id="472" class="table-container">
+      <table data-id="473" class="data-table">
+        <thead data-id="474"><tr data-id="475"><th data-id="476">Code</th><th data-id="477">Category</th><th data-id="478">Subcategory Codes</th><th data-id="479">Example SKU</th></tr></thead>
+        <tbody data-id="480">
+          <tr data-id="481"><td data-id="482"><span data-id="483" class="pill pill-navy">MAT</span></td><td data-id="484" class="font-semibold">Materials</td><td data-id="485" class="text-xs">WOOD, ACRYL, MDF, CANV, FABR, CORK, LEATH, FOAM</td><td data-id="486" class="font-mono text-xs">MAT-WOOD-001</td></tr>
+          <tr data-id="487"><td data-id="488"><span data-id="489" class="pill pill-navy">BLK</span></td><td data-id="490" class="font-semibold">Blanks</td><td data-id="491" class="text-xs">MUG, TMBL, SHIRT, TOTE, TILE, ORNA, KYCHN, CSTR</td><td data-id="492" class="font-mono text-xs">BLK-MUG-001</td></tr>
+          <tr data-id="493"><td data-id="494"><span data-id="495" class="pill pill-navy">CONS</span></td><td data-id="496" class="font-semibold">Consumables</td><td data-id="497" class="text-xs">INK, TAPE, VINYL, PAINT, STAIN, ADHS, COATG, SAND</td><td data-id="498" class="font-mono text-xs">CONS-INK-001</td></tr>
+          <tr data-id="499"><td data-id="500"><span data-id="501" class="pill pill-navy">PKG</span></td><td data-id="502" class="font-semibold">Packaging</td><td data-id="503" class="text-xs">BOX, MAILR, BUBBL, TISSUE, LABEL, BAG, RIBN, FILL</td><td data-id="504" class="font-mono text-xs">PKG-BOX-001</td></tr>
+          <tr data-id="505"><td data-id="506"><span data-id="507" class="pill pill-navy">SUB</span></td><td data-id="508" class="font-semibold">Sublimation</td><td data-id="509" class="text-xs">PAPER, INK, TAPE, PROTECT, FOAM, SPRAY</td><td data-id="510" class="font-mono text-xs">SUB-PAPER-001</td></tr>
+          <tr data-id="511"><td data-id="512"><span data-id="513" class="pill pill-navy">FIL</span></td><td data-id="514" class="font-semibold">3D Filament</td><td data-id="515" class="text-xs">PLA, PETG, TPU, ABS, PLAP, RESN, WASH</td><td data-id="516" class="font-mono text-xs">FIL-PLA-001</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SKU Builder -->
+  <div data-id="517" class="card p-5 md:p-7 mb-6">
+    <h3 data-id="518" class="font-bold text-sm text-navy-600 mb-4 flex items-center gap-2">🔨 SKU Builder</h3>
+    <div data-id="519" class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+      <div data-id="520">
+        <label data-id="521" class="text-xs font-semibold text-gray-600 block mb-1">Category</label>
+        <select data-id="522" id="sku-cat" class="form-input">
+          <option data-id="523" value="MAT">MAT — Materials</option>
+          <option data-id="524" value="BLK">BLK — Blanks</option>
+          <option data-id="525" value="CONS">CONS — Consumables</option>
+          <option data-id="526" value="PKG">PKG — Packaging</option>
+          <option data-id="527" value="SUB">SUB — Sublimation</option>
+          <option data-id="528" value="FIL">FIL — 3D Filament</option>
+        </select>
+      </div>
+      <div data-id="529">
+        <label data-id="530" class="text-xs font-semibold text-gray-600 block mb-1">Subcategory</label>
+        <select data-id="531" id="sku-sub" class="form-input"></select>
+      </div>
+      <div data-id="532">
+        <label data-id="533" class="text-xs font-semibold text-gray-600 block mb-1">Sequence (001–999)</label>
+        <input data-id="534" type="number" id="sku-seq" class="form-input" min="1" max="999" value="1" />
+      </div>
+      <button data-id="535" id="sku-build-btn" class="btn-primary justify-center h-[44px]">Build SKU</button>
+    </div>
+    <div data-id="536" id="sku-result" class="mt-4 p-4 rounded-xl text-center hidden" style="background:#1a3a6b;">
+      <p data-id="537" class="text-2xl md:text-3xl font-bold font-mono text-white tracking-wider" id="sku-output"></p>
+    </div>
+  </div>
+
+  <!-- SKU Rules -->
+  <div data-id="538" class="card-flat p-5" style="background:#fffbeb; border-left:4px solid #d97706;">
+    <h3 data-id="539" class="font-bold text-sm text-amber-800 mb-2 flex items-center gap-2">📋 SKU Rules</h3>
+    <ul data-id="540" class="space-y-1.5 text-xs text-amber-900">
+      <li data-id="541">• SKUs are permanent once assigned — never reuse a retired SKU (mark <strong data-id="542">Discontinued</strong> instead)</li>
+      <li data-id="543">• Sequential numbers never reset</li>
+      <li data-id="544">• New items always get the next available number in their subcategory</li>
+      <li data-id="545">• When in doubt, check the OSOT Master Index → Section 2</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 7: RECIPES ==================== -->
+<section data-id="546" id="recipes" class="py-10 md:py-14">
+<div data-id="547" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="548" class="section-title flex items-center gap-2">📒 Recipe Book Quick-Reference</h2>
+  <p data-id="549" class="section-sub mb-6">Linked to Maker Lab Recipe and Project Book.docx</p>
+
+  <div data-id="550" class="space-y-3" id="recipe-accordions">
+    <!-- Recipe 1 -->
+    <div data-id="551" class="card overflow-hidden">
+      <div data-id="552" class="accordion-header recipe-acc-header" data-idx="r1">
+        <div data-id="553" class="flex items-center gap-3"><span data-id="554" class="text-lg">🎨</span><div data-id="555"><p data-id="556" class="font-bold text-sm text-navy-600">Section 1 — Sublimation Recipes</p><p data-id="557" class="text-xs text-gray-500">Master settings table for 15+ blank types + troubleshooting guide</p></div></div>
+        <i data-id="558" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron flex-shrink-0"></i>
+      </div>
+      <div data-id="559" class="accordion-content recipe-acc-content" data-idx="r1">
+        <ul data-id="560" class="text-xs text-gray-600 space-y-1.5 mb-3 mt-1">
+          <li data-id="561">• Temperature & time settings for mugs, tumblers, tiles, apparel, and more</li>
+          <li data-id="562">• Pressure guidelines per blank type</li>
+          <li data-id="563">• Pre-press requirements and parchment protection notes</li>
+          <li data-id="564">• Troubleshooting: ghosting, colour issues, moisture marks</li>
+        </ul>
+        <a data-id="565" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent inline-flex">Open in Recipe Book <i data-id="566" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+    <!-- Recipe 2 -->
+    <div data-id="567" class="card overflow-hidden">
+      <div data-id="568" class="accordion-header recipe-acc-header" data-idx="r2">
+        <div data-id="569" class="flex items-center gap-3"><span data-id="570" class="text-lg">🖌️</span><div data-id="571"><p data-id="572" class="font-bold text-sm text-navy-600">Section 2 — Paint Mix Formulas</p><p data-id="573" class="text-xs text-gray-500">15+ named colour mixes, chalk paint recipes, distressing techniques</p></div></div>
+        <i data-id="574" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron flex-shrink-0"></i>
+      </div>
+      <div data-id="575" class="accordion-content recipe-acc-content" data-idx="r2">
+        <ul data-id="576" class="text-xs text-gray-600 space-y-1.5 mb-3 mt-1">
+          <li data-id="577">• Named colour mixes with exact ratios and brand references</li>
+          <li data-id="578">• DIY chalk paint recipes with plaster-of-paris ratios</li>
+          <li data-id="579">• Distressing & antiquing techniques step-by-step</li>
+        </ul>
+        <a data-id="580" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent inline-flex">Open in Recipe Book <i data-id="581" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+    <!-- Recipe 3 -->
+    <div data-id="582" class="card overflow-hidden">
+      <div data-id="583" class="accordion-header recipe-acc-header" data-idx="r3">
+        <div data-id="584" class="flex items-center gap-3"><span data-id="585" class="text-lg">🪵</span><div data-id="586"><p data-id="587" class="font-bold text-sm text-navy-600">Section 3 — Wood Stain Formulas</p><p data-id="588" class="text-xs text-gray-500">10 pre-made stains + 5 custom DIY recipes by wood species</p></div></div>
+        <i data-id="589" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron flex-shrink-0"></i>
+      </div>
+      <div data-id="590" class="accordion-content recipe-acc-content" data-idx="r3">
+        <ul data-id="591" class="text-xs text-gray-600 space-y-1.5 mb-3 mt-1">
+          <li data-id="592">• Pre-made stain swatches with brand and product codes</li>
+          <li data-id="593">• DIY stain recipes (tea, vinegar-steel, coffee, walnut husk)</li>
+          <li data-id="594">• Wood species compatibility matrix</li>
+        </ul>
+        <a data-id="595" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent inline-flex">Open in Recipe Book <i data-id="596" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+    <!-- Recipe 4 -->
+    <div data-id="597" class="card overflow-hidden">
+      <div data-id="598" class="accordion-header recipe-acc-header" data-idx="r4">
+        <div data-id="599" class="flex items-center gap-3"><span data-id="600" class="text-lg">💧</span><div data-id="601"><p data-id="602" class="font-bold text-sm text-navy-600">Section 4 — Acrylic Wash Recipes</p><p data-id="603" class="text-xs text-gray-500">7 wash types, glazing ratios, layering technique guide</p></div></div>
+        <i data-id="604" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron flex-shrink-0"></i>
+      </div>
+      <div data-id="605" class="accordion-content recipe-acc-content" data-idx="r4">
+        <ul data-id="606" class="text-xs text-gray-600 space-y-1.5 mb-3 mt-1">
+          <li data-id="607">• Wash-to-water ratios for 7 common wash techniques</li>
+          <li data-id="608">• Glazing medium recipes for depth and transparency</li>
+          <li data-id="609">• Layering order and dry-time recommendations</li>
+        </ul>
+        <a data-id="610" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent inline-flex">Open in Recipe Book <i data-id="611" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+    <!-- Recipe 5 -->
+    <div data-id="612" class="card overflow-hidden">
+      <div data-id="613" class="accordion-header recipe-acc-header" data-idx="r5">
+        <div data-id="614" class="flex items-center gap-3"><span data-id="615" class="text-lg">🔴</span><div data-id="616"><p data-id="617" class="font-bold text-sm text-navy-600">Section 5 — Laser Project Recipes</p><p data-id="618" class="text-xs text-gray-500">Power/speed/passes table for 15+ materials + design file standards</p></div></div>
+        <i data-id="619" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron flex-shrink-0"></i>
+      </div>
+      <div data-id="620" class="accordion-content recipe-acc-content" data-idx="r5">
+        <ul data-id="621" class="text-xs text-gray-600 space-y-1.5 mb-3 mt-1">
+          <li data-id="622">• Power/speed/passes by material type and thickness</li>
+          <li data-id="623">• Kerf compensation values for tight-fit assemblies</li>
+          <li data-id="624">• Design file standards (DXF/SVG settings, line colours)</li>
+          <li data-id="625">• Masking tape and air-assist recommendations</li>
+        </ul>
+        <a data-id="626" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent inline-flex">Open in Recipe Book <i data-id="627" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+    <!-- Recipe 6 -->
+    <div data-id="628" class="card overflow-hidden">
+      <div data-id="629" class="accordion-header recipe-acc-header" data-idx="r6">
+        <div data-id="630" class="flex items-center gap-3"><span data-id="631" class="text-lg">🖨️</span><div data-id="632"><p data-id="633" class="font-bold text-sm text-navy-600">Section 6 — 3D Print Project Notes</p><p data-id="634" class="text-xs text-gray-500">FDM & resin settings, post-processing guide, filament storage</p></div></div>
+        <i data-id="635" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron flex-shrink-0"></i>
+      </div>
+      <div data-id="636" class="accordion-content recipe-acc-content" data-idx="r6">
+        <ul data-id="637" class="text-xs text-gray-600 space-y-1.5 mb-3 mt-1">
+          <li data-id="638">• Per-filament settings (PLA, PETG, TPU, ABS, resin)</li>
+          <li data-id="639">• Post-processing: sanding, priming, painting 3D prints</li>
+          <li data-id="640">• Filament storage rules and humidity management</li>
+        </ul>
+        <a data-id="641" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent inline-flex">Open in Recipe Book <i data-id="642" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+    <!-- Recipe 7 -->
+    <div data-id="643" class="card overflow-hidden">
+      <div data-id="644" class="accordion-header recipe-acc-header" data-idx="r7">
+        <div data-id="645" class="flex items-center gap-3"><span data-id="646" class="text-lg">✨</span><div data-id="647"><p data-id="648" class="font-bold text-sm text-navy-600">Section 7 — Finishing Techniques</p><p data-id="649" class="text-xs text-gray-500">Sealer chart, epoxy guide, HTV by vinyl type, adhesive comparison</p></div></div>
+        <i data-id="650" data-lucide="chevron-down" class="w-5 h-5 text-gray-400 chevron flex-shrink-0"></i>
+      </div>
+      <div data-id="651" class="accordion-content recipe-acc-content" data-idx="r7">
+        <ul data-id="652" class="text-xs text-gray-600 space-y-1.5 mb-3 mt-1">
+          <li data-id="653">• Sealer comparison chart: polyurethane, polycrylic, epoxy, spray</li>
+          <li data-id="654">• Epoxy mixing ratios and curing times</li>
+          <li data-id="655">• HTV settings by vinyl type (EasyWeed, EasySubli, glitter)</li>
+          <li data-id="656">• Adhesive comparison: E6000 vs Gorilla vs hot glue vs CA</li>
+        </ul>
+        <a data-id="657" href="https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab" target="_blank" rel="noopener" class="btn-accent inline-flex">Open in Recipe Book <i data-id="658" data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ==================== SECTION 8: PROJECTS ==================== -->
+<section data-id="659" id="projects" class="py-10 md:py-14" style="background:#e8eef6;">
+<div data-id="660" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="661" class="section-title flex items-center gap-2">📋 Project Log</h2>
+  <p data-id="662" class="section-sub mb-6">Track every product you make — COGS auto-calculated.</p>
+
+  <div data-id="663" class="flex justify-end mb-4">
+    <button data-id="664" id="new-project-btn" class="btn-primary"><i data-id="665" data-lucide="plus" class="w-4 h-4"></i> New Project</button>
+  </div>
+
+  <!-- New Project Form (hidden by default) -->
+  <div data-id="666" id="project-form-wrapper" class="card p-5 md:p-7 mb-6 hidden">
+    <h3 data-id="667" class="font-bold text-sm text-navy-600 mb-4">New Project</h3>
+    <div data-id="668" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div data-id="669"><label data-id="670" class="text-xs font-semibold text-gray-600 block mb-1">Project Name</label><input data-id="671" type="text" id="pf-name" class="form-input" placeholder="e.g. Custom Name Mug" /></div>
+      <div data-id="672"><label data-id="673" class="text-xs font-semibold text-gray-600 block mb-1">Product Type</label><select data-id="674" id="pf-type" class="form-input"><option data-id="675">Sublimation</option><option data-id="676">Laser Engraved</option><option data-id="677">Painted</option><option data-id="678">HTV-Vinyl</option><option data-id="679">3D Printed</option><option data-id="680">Mixed Media</option></select></div>
+      <div data-id="681"><label data-id="682" class="text-xs font-semibold text-gray-600 block mb-1">Blank SKU</label><input data-id="683" type="text" id="pf-sku" class="form-input" placeholder="e.g. BLK-MUG-001" /></div>
+      <div data-id="684"><label data-id="685" class="text-xs font-semibold text-gray-600 block mb-1">Blank Cost ($)</label><input data-id="686" type="number" id="pf-blank" class="form-input" step="0.01" value="0" /></div>
+      <div data-id="687"><label data-id="688" class="text-xs font-semibold text-gray-600 block mb-1">Material Cost ($)</label><input data-id="689" type="number" id="pf-material" class="form-input" step="0.01" value="0" /></div>
+      <div data-id="690"><label data-id="691" class="text-xs font-semibold text-gray-600 block mb-1">Ink/Consumable ($)</label><input data-id="692" type="number" id="pf-ink" class="form-input" step="0.01" value="0" /></div>
+      <div data-id="693"><label data-id="694" class="text-xs font-semibold text-gray-600 block mb-1">Packaging Cost ($)</label><input data-id="695" type="number" id="pf-pkg" class="form-input" step="0.01" value="0" /></div>
+      <div data-id="696"><label data-id="697" class="text-xs font-semibold text-gray-600 block mb-1">Labor Time (min)</label><input data-id="698" type="number" id="pf-time" class="form-input" value="0" /></div>
+      <div data-id="699"><label data-id="700" class="text-xs font-semibold text-gray-600 block mb-1">Labor Rate ($/hr)</label><input data-id="701" type="number" id="pf-rate" class="form-input" step="0.01" value="18.00" /></div>
+      <div data-id="702"><label data-id="703" class="text-xs font-semibold text-gray-600 block mb-1">Retail Price ($)</label><input data-id="704" type="number" id="pf-retail" class="form-input" step="0.01" value="0" /></div>
+      <div data-id="705"><label data-id="706" class="text-xs font-semibold text-gray-600 block mb-1">Status</label><select data-id="707" id="pf-status" class="form-input"><option data-id="708">Planning</option><option data-id="709">In Production</option><option data-id="710">Complete</option><option data-id="711">Archived</option></select></div>
+      <div data-id="712" class="sm:col-span-2 lg:col-span-1"><label data-id="713" class="text-xs font-semibold text-gray-600 block mb-1">Notes</label><textarea data-id="714" id="pf-notes" class="form-input" rows="2" placeholder="Optional notes..."></textarea></div>
+    </div>
+    <!-- Live Calculations -->
+    <div data-id="715" id="pf-calc" class="mt-4 p-4 rounded-xl bg-navy-50 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+      <div data-id="716"><p data-id="717" class="text-[.65rem] font-semibold text-gray-500 uppercase">Labor Cost</p><p data-id="718" class="text-lg font-bold text-navy-600" id="pf-labor-cost">$0.00</p></div>
+      <div data-id="719"><p data-id="720" class="text-[.65rem] font-semibold text-gray-500 uppercase">COGS</p><p data-id="721" class="text-lg font-bold text-navy-600" id="pf-cogs">$0.00</p></div>
+      <div data-id="722"><p data-id="723" class="text-[.65rem] font-semibold text-gray-500 uppercase">Gross Margin</p><p data-id="724" class="text-lg font-bold text-navy-600" id="pf-margin">0%</p></div>
+      <div data-id="725"><p data-id="726" class="text-[.65rem] font-semibold text-gray-500 uppercase">Rating</p><p data-id="727" class="text-lg font-bold" id="pf-rating">—</p></div>
+    </div>
+    <div data-id="728" class="flex gap-3 mt-4">
+      <button data-id="729" id="pf-save-btn" class="btn-primary">Save Project</button>
+      <button data-id="730" id="pf-cancel-btn" class="btn-outline">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Project Cards -->
+  <div data-id="731" id="project-cards" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+</div>
+</section>
+
+<!-- ==================== SECTION 9: SUPPLIERS ==================== -->
+<section data-id="732" id="suppliers" class="py-10 md:py-14">
+<div data-id="733" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="734" class="section-title flex items-center gap-2">🤝 Supplier Directory</h2>
+  <p data-id="735" class="section-sub mb-6">12 Canadian-friendly suppliers — verified June 2026.</p>
+
+  <div data-id="736" class="flex flex-wrap gap-2 mb-5" id="supplier-filters">
+    <button data-id="737" class="filter-chip active" data-cat="all">All</button>
+    <button data-id="738" class="filter-chip" data-cat="blanks">Blanks</button>
+    <button data-id="739" class="filter-chip" data-cat="sublimation">Sublimation</button>
+    <button data-id="740" class="filter-chip" data-cat="filament">3D Filament</button>
+    <button data-id="741" class="filter-chip" data-cat="packaging">Packaging</button>
+    <button data-id="742" class="filter-chip" data-cat="vinyl">HTV / Vinyl</button>
+    <button data-id="743" class="filter-chip" data-cat="craft">Craft Supplies</button>
+    <button data-id="744" class="filter-chip" data-cat="wood">Wood / Materials</button>
+    <button data-id="745" class="filter-chip" data-cat="apparel">Apparel</button>
+  </div>
+
+  <div data-id="746" class="grid grid-cols-1 md:grid-cols-2 gap-4" id="supplier-grid"></div>
+</div>
+</section>
+
+<!-- ==================== SECTION 10: CHECKLIST ==================== -->
+<section data-id="747" id="checklist" class="py-10 md:py-14" style="background:#e8eef6;">
+<div data-id="748" class="max-w-6xl mx-auto px-4 md:px-6">
+  <h2 data-id="749" class="section-title flex items-center gap-2">✅ Migration Checklist</h2>
+  <p data-id="750" class="section-sub mb-6">Track your system build progress — tap items to toggle complete.</p>
+
+  <!-- Progress Bar -->
+  <div data-id="751" class="card p-5 mb-6">
+    <div data-id="752" class="flex items-center justify-between mb-2">
+      <span data-id="753" class="text-sm font-semibold text-navy-600" id="progress-text">6 of 17 complete</span>
+      <span data-id="754" class="text-sm font-bold text-navy-600" id="progress-pct">35%</span>
+    </div>
+    <div data-id="755" class="progress-bar-bg"><div data-id="756" class="progress-bar-fill" id="progress-fill" style="width:35%"></div></div>
+  </div>
+
+  <!-- Group 1: Completed -->
+  <div data-id="757" class="card mb-4 overflow-hidden">
+    <div data-id="758" class="px-5 py-3 flex items-center gap-2" style="background:#16a34a;">
+      <span data-id="759" class="text-white font-bold text-sm">✅ System Build — COMPLETED</span>
+    </div>
+    <div data-id="760" class="p-4 space-y-1" id="check-group-completed">
+      <div data-id="761" class="check-item completed" data-key="cl-1"><div data-id="762" class="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style="background:#16a34a;"><i data-id="763" data-lucide="check" class="w-3.5 h-3.5 text-white"></i></div><span data-id="764" class="check-text text-sm">Maker Lab Inventory Database built (6 category sheets + dashboard)</span></div>
+      <div data-id="765" class="check-item completed" data-key="cl-2"><div data-id="766" class="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style="background:#16a34a;"><i data-id="767" data-lucide="check" class="w-3.5 h-3.5 text-white"></i></div><span data-id="768" class="check-text text-sm">Maker Lab Recipe & Project Book built (7 sections + appendix)</span></div>
+      <div data-id="769" class="check-item completed" data-key="cl-3"><div data-id="770" class="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style="background:#16a34a;"><i data-id="771" data-lucide="check" class="w-3.5 h-3.5 text-white"></i></div><span data-id="772" class="check-text text-sm">OSOT Master Index built (8 sections + appendices + live OneDrive links)</span></div>
+      <div data-id="773" class="check-item completed" data-key="cl-4"><div data-id="774" class="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style="background:#16a34a;"><i data-id="775" data-lucide="check" class="w-3.5 h-3.5 text-white"></i></div><span data-id="776" class="check-text text-sm">All 3 documents saved to Just Jane Maker Hub on OneDrive</span></div>
+      <div data-id="777" class="check-item completed" data-key="cl-5"><div data-id="778" class="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style="background:#16a34a;"><i data-id="779" data-lucide="check" class="w-3.5 h-3.5 text-white"></i></div><span data-id="780" class="check-text text-sm">Documents cross-linked throughout OSOT Master Index</span></div>
+      <div data-id="781" class="check-item completed" data-key="cl-6"><div data-id="782" class="w-5 h-5 rounded-md flex-shrink-0 flex items-center justify-center" style="background:#16a34a;"><i data-id="783" data-lucide="check" class="w-3.5 h-3.5 text-white"></i></div><span data-id="784" class="check-text text-sm">Maker Hub updated to v2.0</span></div>
+    </div>
+  </div>
+
+  <!-- Group 2: In Progress -->
+  <div data-id="785" class="card mb-4 overflow-hidden">
+    <div data-id="786" class="px-5 py-3 flex items-center gap-2" style="background:#d97706;">
+      <span data-id="787" class="text-white font-bold text-sm">🔄 In Progress — Populate the System</span>
+    </div>
+    <div data-id="788" class="p-4 space-y-1" id="check-group-progress">
+      <div data-id="789" class="check-item" data-key="cl-7"><div data-id="790" class="w-5 h-5 rounded-md border-2 border-amber-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="791" class="check-text text-sm">Enter real stock counts into Inventory Database (replace sample data)</span></div>
+      <div data-id="792" class="check-item" data-key="cl-8"><div data-id="793" class="w-5 h-5 rounded-md border-2 border-amber-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="794" class="check-text text-sm">Add real supplier account numbers to OSOT Supplier Directory</span></div>
+      <div data-id="795" class="check-item" data-key="cl-9"><div data-id="796" class="w-5 h-5 rounded-md border-2 border-amber-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="797" class="check-text text-sm">Verify all OneDrive links open correctly on Android device</span></div>
+      <div data-id="798" class="check-item" data-key="cl-10"><div data-id="799" class="w-5 h-5 rounded-md border-2 border-amber-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="800" class="check-text text-sm">Delete stray root-level "Maker Lab" folder from OneDrive</span></div>
+      <div data-id="801" class="check-item" data-key="cl-11"><div data-id="802" class="w-5 h-5 rounded-md border-2 border-amber-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="803" class="check-text text-sm">Complete Pricing & COGS Calculator spreadsheet build</span></div>
+      <div data-id="804" class="check-item" data-key="cl-12"><div data-id="805" class="w-5 h-5 rounded-md border-2 border-amber-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="806" class="check-text text-sm">Enter real product costs into Pricing Calculator</span></div>
+    </div>
+  </div>
+
+  <!-- Group 3: Next Up -->
+  <div data-id="807" class="card overflow-hidden">
+    <div data-id="808" class="px-5 py-3 flex items-center gap-2" style="background:#2b7fff;">
+      <span data-id="809" class="text-white font-bold text-sm">⏳ Next Up — Automate & Scale</span>
+    </div>
+    <div data-id="810" class="p-4 space-y-1" id="check-group-next">
+      <div data-id="811" class="check-item" data-key="cl-13"><div data-id="812" class="w-5 h-5 rounded-md border-2 border-blue-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="813" class="check-text text-sm">Set up weekly reorder reminder (automated Monday morning check)</span></div>
+      <div data-id="814" class="check-item" data-key="cl-14"><div data-id="815" class="w-5 h-5 rounded-md border-2 border-blue-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="816" class="check-text text-sm">Build Order & Production Tracker spreadsheet</span></div>
+      <div data-id="817" class="check-item" data-key="cl-15"><div data-id="818" class="w-5 h-5 rounded-md border-2 border-blue-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="819" class="check-text text-sm">Build shareable Product Catalog document</span></div>
+      <div data-id="820" class="check-item" data-key="cl-16"><div data-id="821" class="w-5 h-5 rounded-md border-2 border-blue-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="822" class="check-text text-sm">Set up Etsy / marketplace listing templates</span></div>
+      <div data-id="823" class="check-item" data-key="cl-17"><div data-id="824" class="w-5 h-5 rounded-md border-2 border-blue-400 flex-shrink-0 flex items-center justify-center check-box"></div><span data-id="825" class="check-text text-sm">Set up quarterly inventory audit reminder</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer data-id="826" class="py-8 text-center" style="background:#1a3a6b;">
+  <p data-id="827" class="text-sm text-white/90 font-medium">Just Jane Maker Hub · v2.0 · June 2026 · Dorval, QC, Canada</p>
+  <p data-id="828" class="text-xs text-white/60 mt-2">Made by Copilot ❤️</p>
+</footer>
+
+<script>
+// ===== LUCIDE ICONS =====
+if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+  lucide.createIcons();
+}
+
+// ===== MOBILE MENU =====
+const mobileBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileOverlay = document.getElementById('mobile-overlay');
+const mobileClose = document.getElementById('mobile-menu-close');
+
+function openMobileMenu() { mobileMenu.classList.remove('translate-x-full'); mobileOverlay.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMobileMenu() { mobileMenu.classList.add('translate-x-full'); mobileOverlay.classList.remove('open'); document.body.style.overflow=''; }
+
+mobileBtn.addEventListener('click', openMobileMenu);
+mobileClose.addEventListener('click', closeMobileMenu);
+mobileOverlay.addEventListener('click', closeMobileMenu);
+
+document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+  link.addEventListener('click', closeMobileMenu);
+});
+
+// ===== SCROLL SPY =====
+const sections = document.querySelectorAll('main > section');
+const navLinks = document.querySelectorAll('#desktop-nav .nav-link');
+
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(function(l) { l.classList.toggle('active', l.dataset.section === id); });
+    }
+  });
+}, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+sections.forEach(function(s) { observer.observe(s); });
+
+// ===== OSOT CLASSIFIER =====
+const osotInput = document.getElementById('osot-input');
+const osotBtn = document.getElementById('osot-classify-btn');
+const osotResult = document.getElementById('osot-result');
+
+const routes = [
+  { keys: ['inventory','stock','qty','reorder','low stock','bin','shelf','on hand'], icon:'📦', cat:'Inventory Database', doc:'Excel Master Database', section:'Matching category tab (MAT/BLK/CONS/PKG/SUB/FIL)', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s8d2bcaf3a30b4e2fa0d77721356c742b' },
+  { keys: ['sublimation','mug','tumbler','heat press','dye sub','transfer','texprint','sawgrass','sub paper'], icon:'🎨', cat:'Sublimation Hub', doc:'Recipe & Project Book', section:'Section 1 — Sublimation Settings', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab' },
+  { keys: ['pla','petg','tpu','abs','resin','filament','3d print','fdm','nozzle','bed temp','layer','infill','slicer','desiccant'], icon:'🖨️', cat:'3D Print Hub', doc:'Recipe & Project Book', section:'Section 6 — 3D Print', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab' },
+  { keys: ['paint','stain','acrylic wash','chalk','distress','glaze','mod podge','wood finish'], icon:'🎨', cat:'Recipe Book', doc:'Recipe & Project Book', section:'Sections 2–4 — Paint / Stain / Wash', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab' },
+  { keys: ['laser','engrave','lightburn','kerf','masking','co2','diode','acrylic cut','wood cut'], icon:'🔴', cat:'Laser Settings', doc:'Recipe & Project Book', section:'Section 5 — Laser', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab' },
+  { keys: ['htv','vinyl','heat transfer','easysubli','cold peel','warm peel','siser','cricut'], icon:'🎨', cat:'Recipe Book', doc:'Recipe & Project Book', section:'Section 7 — Finishing & HTV', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s7d0fe9635393470fa19acd220fabf1ab' },
+  { keys: ['sku','naming','mat-','blk-','cons-','pkg-','sub-','fil-','code','prefix','sequence'], icon:'🏷️', cat:'SKU Reference', doc:'OSOT Master Index', section:'Section 2 — SKU Naming Conventions', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s07f6a8f311c1407d8187bf3fbcaca1d2' },
+  { keys: ['supplier','vendor','order','purchase','lead time','moq'], icon:'🤝', cat:'Suppliers', doc:'OSOT Master Index', section:'Section 4 — Supplier Master List', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s07f6a8f311c1407d8187bf3fbcaca1d2' },
+  { keys: ['price','cost','cogs','margin','profit','retail','wholesale','labor','overhead','markup'], icon:'💰', cat:'Pricing', doc:'Pricing & COGS Calculator', section:'Coming soon', link:'' },
+  { keys: ['recipe','version','v1','v2','changelog','archive'], icon:'📒', cat:'Recipe Versioning', doc:'OSOT Master Index', section:'Section 3 — Versioning Rules', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s07f6a8f311c1407d8187bf3fbcaca1d2' },
+  { keys: ['zone','storage','cabinet','shelf location','bin location','z01','z02'], icon:'🗺️', cat:'Lab Map', doc:'OSOT Master Index', section:'Section 6 — Lab Organization Map', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s07f6a8f311c1407d8187bf3fbcaca1d2' }
+];
+
+function classifyOSOT() {
+  var q = osotInput.value.toLowerCase().trim();
+  if (!q) { osotResult.classList.add('hidden'); return; }
+  var match = null;
+  for (var i = 0; i < routes.length; i++) {
+    for (var j = 0; j < routes[i].keys.length; j++) {
+      if (q.indexOf(routes[i].keys[j]) !== -1) { match = routes[i]; break; }
+    }
+    if (match) break;
+  }
+  if (!match) match = { icon:'🗂️', cat:'OSOT Master Index', doc:'OSOT Master Index', section:'Section 8 — Cross-Document Quick Reference Table', link:'https://onedrive.live.com/edit?id=2DCDFA2FBB5856D6!s07f6a8f311c1407d8187bf3fbcaca1d2' };
+
+  var linkHtml = match.link ? '<a href="'+match.link+'" target="_blank" rel="noopener" class="btn-accent mt-3 inline-flex">Open Document <i data-lucide="external-link" class="w-3.5 h-3.5"></i></a>' : '<span class="pill pill-yellow mt-3 inline-block">Coming soon</span>';
+
+  osotResult.innerHTML = '<div class="p-5 rounded-xl" style="background:#eff6ff; border-left:4px solid #2b7fff;"><div class="flex items-start gap-3"><span class="text-2xl">'+match.icon+'</span><div><p class="font-bold text-navy-600 text-sm">→ '+match.cat+'</p><p class="text-xs text-gray-600 mt-1"><strong>Document:</strong> '+match.doc+'</p><p class="text-xs text-gray-600"><strong>Section:</strong> '+match.section+'</p>'+linkHtml+'</div></div></div>';
+  osotResult.classList.remove('hidden');
+  if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") lucide.createIcons();
+}
+
+osotBtn.addEventListener('click', classifyOSOT);
+osotInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') classifyOSOT(); });
+
+// ===== SUBLIMATION TABLE =====
+var subData = [
+  ['11oz Mug',400,204,180,'Medium','Yes','Wrap tight, tape all edges'],
+  ['15oz Mug',400,204,180,'Medium','Yes','Tall wrap, extra tape at seam'],
+  ['20oz Skinny Tumbler',400,204,60,'Medium','Yes','Use convex press or rotary attachment'],
+  ['30oz Skinny Tumbler',385,196,60,'Medium','Yes','Rotate halfway if no rotary'],
+  ['40oz Tumbler',385,196,65,'Medium','Yes','Check wrap overlap carefully'],
+  ['Ceramic Tile 4×4',400,204,60,'Firm','No','Face down on foam pad'],
+  ['Hardboard Coaster',385,196,60,'Firm','No','Protect back with parchment'],
+  ['Polyester T-Shirt',385,196,45,'Medium','Yes','Cold peel only'],
+  ['Polyester Tote Bag',385,196,50,'Medium','Yes','Pre-press 5 sec first'],
+  ['Pillow Cover 18×18',385,196,55,'Medium','Yes','Pre-press to remove moisture'],
+  ['Mouse Pad',400,204,90,'Firm','No','Use parchment on top'],
+  ['Phone Case (Hard)',400,204,75,'Medium','No','Check blank fit before pressing']
+];
+
+function pressurePill(p) {
+  if (p === 'Light') return '<span class="pill pill-grey">Light</span>';
+  if (p === 'Medium') return '<span class="pill pill-blue">Medium</span>';
+  return '<span class="pill pill-orange">Firm</span>';
+}
+
+function renderSubTable(filter) {
+  var tbody = document.getElementById('sub-tbody');
+  var f = (filter || '').toLowerCase();
+  var html = '';
+  subData.forEach(function(r) {
+    if (f && r[0].toLowerCase().indexOf(f) === -1) return;
+    html += '<tr><td class="font-semibold whitespace-nowrap">'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+pressurePill(r[4])+'</td><td>'+r[5]+'</td><td class="text-xs">'+r[6]+'</td></tr>';
+  });
+  tbody.innerHTML = html || '<tr><td colspan="7" class="text-center text-gray-400 py-4">No matching blanks found</td></tr>';
+}
+
+renderSubTable('');
+document.getElementById('sub-filter').addEventListener('input', function(e) { renderSubTable(e.target.value); });
+
+// ===== TROUBLESHOOTING ACCORDION =====
+document.getElementById('trouble-header').addEventListener('click', function() {
+  this.classList.toggle('open');
+  document.getElementById('trouble-content').classList.toggle('open');
+});
+
+// ===== RECIPE ACCORDIONS =====
+document.querySelectorAll('.recipe-acc-header').forEach(function(h) {
+  h.addEventListener('click', function() {
+    var idx = this.dataset.idx;
+    this.classList.toggle('open');
+    var content = document.querySelector('.recipe-acc-content[data-idx="'+idx+'"]');
+    if (content) content.classList.toggle('open');
+  });
+});
+
+// ===== SKU BUILDER =====
+var skuSubs = {
+  MAT: ['WOOD','ACRYL','MDF','CANV','FABR','CORK','LEATH','FOAM'],
+  BLK: ['MUG','TMBL','SHIRT','TOTE','TILE','ORNA','KYCHN','CSTR'],
+  CONS: ['INK','TAPE','VINYL','PAINT','STAIN','ADHS','COATG','SAND'],
+  PKG: ['BOX','MAILR','BUBBL','TISSUE','LABEL','BAG','RIBN','FILL'],
+  SUB: ['PAPER','INK','TAPE','PROTECT','FOAM','SPRAY'],
+  FIL: ['PLA','PETG','TPU','ABS','PLAP','RESN','WASH']
+};
+
+var skuCat = document.getElementById('sku-cat');
+var skuSub = document.getElementById('sku-sub');
+
+function updateSubcategories() {
+  var cat = skuCat.value;
+  var subs = skuSubs[cat] || [];
+  skuSub.innerHTML = '';
+  subs.forEach(function(s) {
+    var o = document.createElement('option');
+    o.value = s; o.textContent = s;
+    skuSub.appendChild(o);
+  });
+}
+updateSubcategories();
+skuCat.addEventListener('change', updateSubcategories);
+
+document.getElementById('sku-build-btn').addEventListener('click', function() {
+  var seq = parseInt(document.getElementById('sku-seq').value) || 1;
+  seq = Math.max(1, Math.min(999, seq));
+  var sku = skuCat.value + '-' + skuSub.value + '-' + String(seq).padStart(3, '0');
+  document.getElementById('sku-output').textContent = sku;
+  document.getElementById('sku-result').classList.remove('hidden');
+});
+
+// ===== PROJECTS =====
+var defaultProjects = [
+  { name:'11oz Sublimation Mug — Custom Name', type:'Sublimation', sku:'BLK-MUG-001', blank:2.80, material:0.20, ink:0.35, pkg:0.30, time:8, rate:18, retail:18, status:'Complete', notes:'Best seller — personalized name mugs', id:'demo-1' },
+  { name:'Personalised Pine Cutting Board', type:'Laser Engraved', sku:'BLK-CBOARD-001', blank:9.50, material:1.20, ink:0.45, pkg:1.00, time:20, rate:18, retail:48, status:'Complete', notes:'Popular gift item', id:'demo-2' }
+];
+
+function getProjects() {
+  var stored = localStorage.getItem('jj_projects');
+  if (stored) return JSON.parse(stored);
+  return defaultProjects;
+}
+function saveProjects(arr) { localStorage.setItem('jj_projects', JSON.stringify(arr)); }
+
+function calcProject(p) {
+  var laborCost = (p.time / 60) * p.rate;
+  var subtotal = p.blank + p.material + p.ink + p.pkg + laborCost;
+  var cogs = subtotal * 1.12;
+  var margin = p.retail > 0 ? ((p.retail - cogs) / p.retail * 100) : 0;
+  return { laborCost: laborCost, cogs: cogs, margin: margin };
+}
+
+function marginBadge(m) {
+  if (m > 50) return '<span class="margin-badge margin-excellent">'+m.toFixed(1)+'% Excellent</span>';
+  if (m > 35) return '<span class="margin-badge margin-good">'+m.toFixed(1)+'% Good</span>';
+  if (m > 20) return '<span class="margin-badge margin-thin">'+m.toFixed(1)+'% Thin</span>';
+  return '<span class="margin-badge margin-review">'+m.toFixed(1)+'% Review</span>';
+}
+
+function statusBadge(s) {
+  if (s === 'Complete') return '<span class="pill pill-green">✅ Complete</span>';
+  if (s === 'In Production') return '<span class="pill pill-yellow">🔄 In Production</span>';
+  if (s === 'Planning') return '<span class="pill pill-blue">📝 Planning</span>';
+  return '<span class="pill pill-grey">📁 Archived</span>';
+}
+
+function renderProjects() {
+  var projects = getProjects();
+  var container = document.getElementById('project-cards');
+  if (!projects.length) { container.innerHTML = '<p class="text-center text-gray-400 py-8 col-span-2">No projects yet — click + New Project to start.</p>'; return; }
+  var html = '';
+  projects.forEach(function(p) {
+    var c = calcProject(p);
+    html += '<div class="card p-5"><div class="flex items-start justify-between mb-3"><div><h4 class="font-bold text-sm text-navy-600">'+p.name+'</h4><p class="text-xs text-gray-500 mt-0.5">'+p.type+' · <span class="font-mono">'+p.sku+'</span></p></div>'+statusBadge(p.status)+'</div>';
+    html += '<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs mb-3">';
+    html += '<div class="p-2 rounded-lg bg-gray-50"><span class="text-gray-500">Blank</span><br><strong>$'+p.blank.toFixed(2)+'</strong></div>';
+    html += '<div class="p-2 rounded-lg bg-gray-50"><span class="text-gray-500">Material</span><br><strong>$'+p.material.toFixed(2)+'</strong></div>';
+    html += '<div class="p-2 rounded-lg bg-gray-50"><span class="text-gray-500">Ink</span><br><strong>$'+p.ink.toFixed(2)+'</strong></div>';
+    html += '<div class="p-2 rounded-lg bg-gray-50"><span class="text-gray-500">Packaging</span><br><strong>$'+p.pkg.toFixed(2)+'</strong></div>';
+    html += '</div>';
+    html += '<div class="flex flex-wrap items-center gap-3 text-xs"><span class="text-gray-600">Labor: '+p.time+'min @ $'+p.rate.toFixed(2)+'/hr = <strong>$'+c.laborCost.toFixed(2)+'</strong></span><span class="text-gray-400">|</span><span class="text-gray-600">COGS: <strong>$'+c.cogs.toFixed(2)+'</strong></span><span class="text-gray-400">|</span><span class="text-gray-600">Retail: <strong>$'+p.retail.toFixed(2)+'</strong></span></div>';
+    html += '<div class="flex items-center justify-between mt-3">'+marginBadge(c.margin)+'<button class="text-xs text-red-500 hover:text-red-700 font-medium delete-project-btn" data-id="'+p.id+'">Delete</button></div>';
+    if (p.notes) html += '<p class="text-xs text-gray-400 mt-2 italic">'+p.notes+'</p>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+  container.querySelectorAll('.delete-project-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var id = this.dataset.id;
+      var projects = getProjects().filter(function(p) { return p.id !== id; });
+      saveProjects(projects);
+      renderProjects();
+    });
+  });
+}
+renderProjects();
+
+// New project form
+var formWrapper = document.getElementById('project-form-wrapper');
+document.getElementById('new-project-btn').addEventListener('click', function() { formWrapper.classList.toggle('hidden'); });
+document.getElementById('pf-cancel-btn').addEventListener('click', function() { formWrapper.classList.add('hidden'); });
+
+var formFields = ['pf-blank','pf-material','pf-ink','pf-pkg','pf-time','pf-rate','pf-retail'];
+formFields.forEach(function(id) {
+  document.getElementById(id).addEventListener('input', updateCalc);
+});
+
+function updateCalc() {
+  var blank = parseFloat(document.getElementById('pf-blank').value) || 0;
+  var material = parseFloat(document.getElementById('pf-material').value) || 0;
+  var ink = parseFloat(document.getElementById('pf-ink').value) || 0;
+  var pkg = parseFloat(document.getElementById('pf-pkg').value) || 0;
+  var time = parseFloat(document.getElementById('pf-time').value) || 0;
+  var rate = parseFloat(document.getElementById('pf-rate').value) || 18;
+  var retail = parseFloat(document.getElementById('pf-retail').value) || 0;
+
+  var laborCost = (time / 60) * rate;
+  var cogs = (blank + material + ink + pkg + laborCost) * 1.12;
+  var margin = retail > 0 ? ((retail - cogs) / retail * 100) : 0;
+
+  document.getElementById('pf-labor-cost').textContent = '$' + laborCost.toFixed(2);
+  document.getElementById('pf-cogs').textContent = '$' + cogs.toFixed(2);
+  document.getElementById('pf-margin').textContent = margin.toFixed(1) + '%';
+
+  var ratingEl = document.getElementById('pf-rating');
+  if (margin > 50) { ratingEl.textContent = 'Excellent'; ratingEl.className = 'text-lg font-bold text-green-600'; }
+  else if (margin > 35) { ratingEl.textContent = 'Good'; ratingEl.className = 'text-lg font-bold text-amber-600'; }
+  else if (margin > 20) { ratingEl.textContent = 'Thin'; ratingEl.className = 'text-lg font-bold text-orange-600'; }
+  else if (retail > 0) { ratingEl.textContent = 'Review'; ratingEl.className = 'text-lg font-bold text-red-600'; }
+  else { ratingEl.textContent = '—'; ratingEl.className = 'text-lg font-bold text-gray-400'; }
+}
+
+document.getElementById('pf-save-btn').addEventListener('click', function() {
+  var name = document.getElementById('pf-name').value.trim();
+  if (!name) { alert('Please enter a project name.'); return; }
+  var project = {
+    name: name,
+    type: document.getElementById('pf-type').value,
+    sku: document.getElementById('pf-sku').value.trim() || 'N/A',
+    blank: parseFloat(document.getElementById('pf-blank').value) || 0,
+    material: parseFloat(document.getElementById('pf-material').value) || 0,
+    ink: parseFloat(document.getElementById('pf-ink').value) || 0,
+    pkg: parseFloat(document.getElementById('pf-pkg').value) || 0,
+    time: parseFloat(document.getElementById('pf-time').value) || 0,
+    rate: parseFloat(document.getElementById('pf-rate').value) || 18,
+    retail: parseFloat(document.getElementById('pf-retail').value) || 0,
+    status: document.getElementById('pf-status').value,
+    notes: document.getElementById('pf-notes').value.trim(),
+    id: 'proj-' + Date.now()
+  };
+  var projects = getProjects();
+  projects.unshift(project);
+  saveProjects(projects);
+  renderProjects();
+  formWrapper.classList.add('hidden');
+  document.getElementById('pf-name').value = '';
+  document.getElementById('pf-sku').value = '';
+  document.getElementById('pf-notes').value = '';
+  ['pf-blank','pf-material','pf-ink','pf-pkg','pf-time','pf-retail'].forEach(function(id) { document.getElementById(id).value = '0'; });
+  document.getElementById('pf-rate').value = '18.00';
+  updateCalc();
+});
+
+// ===== SUPPLIERS =====
+var suppliers = [
+  { name:'Condé Systems CA', cat:'blanks', catLabel:'Blanks & Sublimation', site:'condensystems.ca', lead:'3–5 days', stars:5, notes:'AAA sublimation blanks, Canadian shipping' },
+  { name:'Sawgrass Technologies', cat:'sublimation', catLabel:'Sublimation Ink & Printers', site:'sawgrassink.com', lead:'2–4 days', stars:5, notes:'SG500/SG1000 ink only source' },
+  { name:'TumblerMart CA', cat:'blanks', catLabel:'Tumblers & Blanks', site:'tumblermart.ca', lead:'3–7 days', stars:4, notes:'Best tumbler prices in Canada' },
+  { name:'Filaments.ca', cat:'filament', catLabel:'3D Filament', site:'filaments.ca', lead:'2–4 days', stars:5, notes:'Canadian warehouse, fast; preferred filament supplier' },
+  { name:'Uline Canada', cat:'packaging', catLabel:'Packaging & Shipping', site:'uline.ca', lead:'1–3 days', stars:5, notes:'Best packaging prices; bulk savings' },
+  { name:'Siser North America', cat:'vinyl', catLabel:'HTV Vinyl', site:'siserna.com', lead:'3–5 days', stars:5, notes:'EasyWeed + EasySubli HTV' },
+  { name:'Michaels Canada', cat:'craft', catLabel:'Craft Supplies & Paint', site:'michaels.com', lead:'In store', stars:4, notes:'Good for paints, Mod Podge, adhesives' },
+  { name:'Home Depot Canada', cat:'wood', catLabel:'Wood, MDF & Finishing', site:'homedepot.ca', lead:'In store', stars:4, notes:'MDF, clear coat, sandpaper' },
+  { name:'Windsor Plywood', cat:'wood', catLabel:'Wood & Sheet Materials', site:'windsorplywood.com', lead:'1–3 days', stars:5, notes:'Best wood quality; trade pricing available' },
+  { name:'A-Sub / Hiipoo CA', cat:'sublimation', catLabel:'Sublimation Paper', site:'amazon.ca', lead:'2–5 days', stars:4, notes:'Reliable sublimation paper for SG500/EcoTank' },
+  { name:'TSC Apparel CA', cat:'apparel', catLabel:'Blank Apparel', site:'tscapparel.com', lead:'3–5 days', stars:4, notes:'Blank tees, hoodies; MOQ 12 pcs' },
+  { name:'Elegoo / Amazon CA', cat:'filament', catLabel:'Resin & 3D Supplies', site:'amazon.ca', lead:'1–3 days', stars:4, notes:'Elegoo resin, wash & cure solution' }
+];
+
+var catColors = { blanks:'pill-blue', sublimation:'pill-orange', filament:'pill-purple', packaging:'pill-grey', vinyl:'pill-green', craft:'pill-yellow', wood:'pill-green', apparel:'pill-blue' };
+
+function renderSuppliers(filter) {
+  var container = document.getElementById('supplier-grid');
+  var html = '';
+  suppliers.forEach(function(s) {
+    if (filter && filter !== 'all' && s.cat !== filter) return;
+    var starsHtml = '';
+    for (var i = 0; i < 5; i++) starsHtml += i < s.stars ? '⭐' : '';
+    html += '<div class="card p-5"><div class="flex items-start justify-between mb-2"><h4 class="font-bold text-sm text-navy-600">'+s.name+'</h4><span class="pill '+(catColors[s.cat]||'pill-grey')+' text-[.65rem]">'+s.catLabel+'</span></div>';
+    html += '<p class="text-xs text-gray-600 mb-1"><i data-lucide="globe" class="w-3 h-3 inline"></i> <a href="https://'+s.site+'" target="_blank" rel="noopener" class="text-blue-600 hover:underline">'+s.site+'</a></p>';
+    html += '<p class="text-xs text-gray-500 mb-1"><i data-lucide="truck" class="w-3 h-3 inline"></i> Lead time: <strong>'+s.lead+'</strong></p>';
+    html += '<p class="text-xs stars mb-2">'+starsHtml+'</p>';
+    html += '<p class="text-xs text-gray-500 italic">'+s.notes+'</p>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+  if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") lucide.createIcons();
+}
+renderSuppliers('all');
+
+document.querySelectorAll('#supplier-filters .filter-chip').forEach(function(chip) {
+  chip.addEventListener('click', function() {
+    document.querySelectorAll('#supplier-filters .filter-chip').forEach(function(c) { c.classList.remove('active'); });
+    this.classList.add('active');
+    renderSuppliers(this.dataset.cat);
+  });
+});
+
+// ===== CHECKLIST =====
+function getChecklist() {
+  var stored = localStorage.getItem('jj_checklist');
+  if (stored) return JSON.parse(stored);
+  var defaults = {};
+  for (var i = 1; i <= 6; i++) defaults['cl-'+i] = true;
+  for (var i = 7; i <= 17; i++) defaults['cl-'+i] = false;
+  return defaults;
+}
+function saveChecklist(obj) { localStorage.setItem('jj_checklist', JSON.stringify(obj)); }
+
+function updateProgress() {
+  var cl = getChecklist();
+  var done = 0;
+  for (var k in cl) { if (cl[k]) done++; }
+  var total = 17;
+  var pct = Math.round((done / total) * 100);
+  document.getElementById('progress-text').textContent = done + ' of ' + total + ' complete';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function renderChecklist() {
+  var cl = getChecklist();
+  document.querySelectorAll('.check-item[data-key]').forEach(function(item) {
+    var key = item.dataset.key;
+    var checked = cl[key];
+    var box = item.querySelector('.check-box');
+    if (checked) {
+      item.classList.add('completed');
+      if (box) { box.style.background = '#16a34a'; box.style.borderColor = '#16a34a'; box.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'; }
+    } else {
+      item.classList.remove('completed');
+      if (box) { box.style.background = ''; box.style.borderColor = ''; box.innerHTML = ''; }
+    }
+  });
+  updateProgress();
+}
+renderChecklist();
+
+document.querySelectorAll('#check-group-progress .check-item, #check-group-next .check-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    var key = this.dataset.key;
+    var cl = getChecklist();
+    cl[key] = !cl[key];
+    saveChecklist(cl);
+    renderChecklist();
+  });
+});
+
+updateProgress();
+</script>
+</body>
+</html>
